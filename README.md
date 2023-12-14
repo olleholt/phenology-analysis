@@ -63,7 +63,7 @@ A time series of Landsat imagery and polygons identifying the locations of study
 ```
 -   Visualize changes in NDVI within vegetation communities
 
-EDS223-assignment3
+phenology-analysis
 
 │ README.md
 
