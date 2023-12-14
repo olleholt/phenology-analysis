@@ -1,6 +1,6 @@
 Author: Olivia Holt
 
-note: from eds 223 course in the MEDS program at UCSB
+*from eds 223 course in the MEDS program at UCSB*
 
 # Overview
 
@@ -73,8 +73,8 @@ rm(list = ls())
 Defining a function to compute the Normalized Difference Vegetation Index (NDVI). NDVI computes the difference in reflectance in the near infrared and red bands, normalized by their sum.
 
 ```{r ndvi-function}
-ndvi_fun <- function(nir, red){
-  (nir - red)(nir + red)
+ndvi_fun = function(nir, red){
+  (nir - red) / (nir + red)
 }
 
 ```
@@ -86,6 +86,8 @@ Starting with the first scene collected on June 12, 2018
 ```{r}
 #reading in a raster
 landsat_20180612 <- rast(here("MEDS","Course","eds223-geospatial","labs","week-8","phenology-analysis","data","landsat_20180612.tif"))
+
+landsat_20180612
 ```
 
 Update the names of the layers to match the spectral bands they correspond to
@@ -93,12 +95,16 @@ Update the names of the layers to match the spectral bands they correspond to
 ```{r}
 #updating the names layer
 names(landsat_20180612) <- c("blue","green","red","NIR","SWIR1","SWIR2")
+
+landsat_20180612
 ```
 
 Apply the NDVI function to compute NDVI for this scene using the `lapp()` function with the NIR and red layers as arguments.
 
 ```{r}
 ndvi_20180612 <- lapp(landsat_20180612[[c("NIR","red")]], fun = ndvi_fun)
+
+ndvi_20180612
 ```
 
 ### computing NDVI for all scenes
@@ -109,7 +115,7 @@ Clear the environment and redefine the function for NDVI.
 
 ```{r}
 rm(list = ls())
-#here::i_am("labs/week8.Rmd")
+
 
 ndvi_fun = function(nir, red){
   (nir - red) / (nir + red)
@@ -141,10 +147,10 @@ Create a list of the scenes for the function to compute NDVI for each.
 # the "pattern" option returns names that end in .tif (the file extension for the landsat scences)
 # the "full.names" option returns the full file path for each scene
 
-list.files(here("MEDS","Course","eds223-geospatial","labs","week-8","phenology-analysis","data"), pattern = "*.tif", full.names = TRUE)
+files <- list.files(here("MEDS","Course","eds223-geospatial","labs","week-8","phenology-analysis","data"), pattern = "*.tif", full.names = TRUE)
 #you could put "*.tif$" then it has to end in ".tif"
 
-
+files
 ```
 
 #### updating the function
@@ -156,8 +162,7 @@ To work with the list of file names
 # passing the function a number that will correspond to the index in the list of file names
 
 create_ndvi_layer <- function(i) {
-  file <- files[i]
-  landsat <- rast(file[i])
+  landsat <- rast(files[i])
   names(landsat) <- c("blue","green","red","NIR","SWIR1","SWIR2")
   ndvi <- lapp(landsat[[c(4,3)]], ndvi_fun)
   return(ndvi)
