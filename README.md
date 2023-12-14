@@ -62,3 +62,39 @@ A time series of Landsat imagery and polygons identifying the locations of study
 <!-- -->
 ```
 -   Visualize changes in NDVI within vegetation communities
+
+EDS223-assignment3
+
+│ README.md
+
+│ phenology-analysis.Rmd
+
+│
+
+└───data
+
+│ landsat_20180815.tif
+
+│ landsat_20181018.tif
+
+\| landsat_20181103.tif
+
+\| landsat_20190122.tif
+
+\| landsat_20190223.tif
+
+\| landsat_20190412.tif
+
+\| landsat_20190701.tif
+
+\| landsat_20180612.tif
+
+│
+
+\| study_sites.dbf
+
+\| study_sites.prj
+
+\| study_sites.shp
+
+\| study_sites.shx
