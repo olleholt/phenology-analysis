@@ -65,7 +65,7 @@ library(tmap)
 library(cowplot)
 
 rm(list = ls())
-#here::i_am("labs/week8.Rmd")
+#here::i_am("Documents/MEDS/Course/eds223-geospatial/labs/week-8/phenology-analysis/phenolog-analysis.Rmd")
 ```
 
 ### create an NDVI function
@@ -85,7 +85,7 @@ Starting with the first scene collected on June 12, 2018
 
 ```{r}
 #reading in a raster
-landsat_20180612 <- rast(here("MEDS","Course","eds223-geospatial","labs","week-8","data","landsat_20180612.tif"))
+landsat_20180612 <- rast(here("MEDS","Course","eds223-geospatial","labs","week-8","phenology-analysis","data","landsat_20180612.tif"))
 ```
 
 Update the names of the layers to match the spectral bands they correspond to
@@ -130,10 +130,6 @@ sketching out a workflow for the function
 #   ndvi <- lapp(landsat[[c(4,3)]], ndvi_fun)
 #   return(ndvi)
 # }
-
-
-
-
 ```
 
 #### creating a list of files/scenes
@@ -141,23 +137,23 @@ sketching out a workflow for the function
 Create a list of the scenes for the function to compute NDVI for each.
 
 ```{r}
-# here we're asking for the names of all the files in the week8 folder
+
 # the "pattern" option returns names that end in .tif (the file extension for the landsat scences)
 # the "full.names" option returns the full file path for each scene
 
-list.files(here("MEDS","Course","eds223-geospatial","labs","week-8","data"), pattern = "*.tif", full.names = TRUE)
+list.files(here("MEDS","Course","eds223-geospatial","labs","week-8","phenology-analysis","data"), pattern = "*.tif", full.names = TRUE)
 #you could put "*.tif$" then it has to end in ".tif"
 
 
 ```
 
-#### updating our function
+#### updating the function
 
-Now let's update our function to work with list of file names we created
+To work with the list of file names
 
 ```{r}
 
-# now we're passing our function a number that will correspond to the index in the list of file names
+# passing the function a number that will correspond to the index in the list of file names
 
 create_ndvi_layer <- function(i) {
   file <- files[i]
@@ -167,7 +163,7 @@ create_ndvi_layer <- function(i) {
   return(ndvi)
  }
 
-# let's test our function by asking it to read in the first file 
+# testing the function by asking it to read in the first file 
 
 test <- create_ndvi_layer(1)
 
@@ -175,7 +171,7 @@ test <- create_ndvi_layer(1)
 
 #### run function on all scenes!
 
-Now we can use our function to create a NDVI layer for each scene and stack them into a single rasterstack.
+Use the function to create an NDVI layer for each scene and stack them into a single rasterstack.
 
 ```{r}
 # create NDVI layer for each scene (day) and stack into a single rasterstack
@@ -204,15 +200,15 @@ names(all_ndvi) <- c("2018-06-12",
 
 ### Compare NDVI across vegetation communities
 
-Now that we have computed NDVI for each of our scenes (days) we want to compare changes in NDVI values across different vegetation communities.
+Compare changes in NDVI values across different vegetation communities.
 
 #### read in study sites
 
-First, we'll read in a shapefile of study sites.
+Read in a shapefile of study sites.
 
 ```{r include=TRUE}
 
-sites <- st_read(here("MEDS","Course","eds223-geospatial","labs","week-8","data","study_sites.shp"))
+sites <- st_read(here("MEDS","Course","eds223-geospatial","labs","week-8", "phenology-analysis", "data","study_sites.shp"))
 
 # plot study sites on a single NDVI layer
 
@@ -225,7 +221,7 @@ tm_shape(all_ndvi[[1]])+
 
 #### extract NDVI at study sites
 
-Here we find the average NDVI within each study site. The output of extract is a data frame with rows that match the study site dataset, so we bind the results to the original dataset.
+Find the average NDVI within each study site. The output of extract is a data frame with rows that match the study site dataset, so we bind the results to the original dataset.
 
 ```{r include=TRUE}
 
@@ -235,8 +231,6 @@ sites_annotated <- cbind(sites, sites_ndvi)
 ```
 
 #### clean results
-
-We're done! Except our data is very untidy... Let's tidy it up!\
 
 -   convert to data frame
 -   turn from wide to long format
